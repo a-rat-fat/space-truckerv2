@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr" class="h-full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Space Truckers v3 🚛🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="color-scheme" content="dark light">
+  </head>
+  <body class="min-h-screen bg-neutral-950 text-neutral-100">
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+      <header class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl md:text-4xl font-bold">Space Truckers <span class="text-neutral-400">v3</span></h1>
+        <div class="flex items-center gap-3">
+          <label class="text-xs flex items-center gap-2">
+            <input id="hardcore" type="checkbox" class="accent-indigo-600">
+            <span data-i18n="hardcore">Hardcore</span>
+          </label>
+          <select id="lang" class="bg-neutral-800 rounded-xl px-2 py-1 text-sm">
+            <option value="fr">FR</option>
+            <option value="en">EN</option>
+          </select>
+          <a href="https://github.com/" target="_blank" class="text-sm underline decoration-dotted">GitHub</a>
+        </div>
+      </header>
+
+      <section class="grid lg:grid-cols-4 gap-4 md:gap-6">
+        <!-- Company / Fleet -->
+        <div class="lg:col-span-1 space-y-4">
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow" id="company-card">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="company">Compagnie</h2>
+            <div class="text-sm space-y-1">
+              <div><span data-i18n="day">Jour</span>: <span id="ui-day" class="font-mono">1</span></div>
+              <div><span data-i18n="credits">Crédits</span>: <span id="ui-credits" class="font-mono">5,000</span></div>
+              <div><span data-i18n="fuel_price">Prix carburant</span>: <span id="ui-fuel-price" class="font-mono">4</span> cr/u</div>
+              <div><span data-i18n="reputation">Réputation</span>: <span id="ui-rep" class="font-mono">0</span></div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button id="next-day" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500" data-i18n="next_day">Jour suivant</button>
+              <button id="random-event" class="px-3 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600" data-i18n="event">Événement</button>
+              <button id="auto-save" class="px-3 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600" data-i18n="autosave">Auto-save</button>
+            </div>
+          </div>
+
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="fleet">Flotte</h2>
+            <div id="fleet-list" class="space-y-2"></div>
+            <div class="mt-3 flex gap-2 flex-wrap">
+              <button id="buy-ship" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500" data-i18n="buy_ship">Acheter un vaisseau (2,000)</button>
+              <button id="sell-ship" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-500" data-i18n="sell_ship">Vendre</button>
+            </div>
+            <div class="mt-3">
+              <label class="text-xs block mb-1" data-i18n="ship_skin">Skin du vaisseau sélectionné</label>
+              <select id="skin-select" class="bg-neutral-800 rounded-xl px-3 py-2">
+                <option value="falcon.svg">Falcon</option>
+                <option value="comet.svg">Comet</option>
+                <option value="beetle.svg">Beetle</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="leaderboard">Classement</h2>
+            <div id="lb-list" class="text-sm space-y-1"></div>
+            <div class="mt-3 flex gap-2">
+              <input id="player-name" placeholder="Votre nom" class="bg-neutral-800 rounded-xl px-3 py-2 w-full outline-none focus:ring-2 ring-indigo-600" />
+              <button id="submit-score" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 shrink-0" data-i18n="submit">Envoyer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contracts / Market -->
+        <div class="lg:col-span-1 space-y-4">
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-3" data-i18n="contracts">Contrats</h2>
+            <div id="contracts" class="space-y-3"></div>
+            <div class="mt-3 flex gap-2">
+              <button id="refresh-contracts" class="px-3 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600" data-i18n="refresh">Rafraîchir</button>
+            </div>
+          </div>
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="market">Marché</h2>
+            <div class="grid grid-cols-2 gap-2">
+              <button id="refuel" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500" data-i18n="refuel">Ravitailler</button>
+              <button id="repair" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500" data-i18n="repair">Réparer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Log / Saves / Quests -->
+        <div class="lg:col-span-1 space-y-4">
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="log">Journal des opérations</h2>
+            <div id="log" class="text-sm h-72 overflow-auto space-y-2 pr-2"></div>
+          </div>
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="saveload">Sauvegarde & Chargement</h2>
+            <div class="flex items-center gap-2 mb-2">
+              <label class="text-sm" data-i18n="slot">Emplacement</label>
+              <select id="save-slot" class="bg-neutral-800 rounded-xl px-3 py-2">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+              <button id="save-game" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500" data-i18n="save">Sauvegarder</button>
+              <button id="load-game" class="px-3 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600" data-i18n="load">Charger</button>
+            </div>
+            <p class="text-xs text-neutral-400" data-i18n="savehint">Les sauvegardes sont stockées en base (SQLite ou Postgres) et persistent aux redémarrages.</p>
+          </div>
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="quests">Quêtes</h2>
+            <div id="quest-list" class="text-sm space-y-2"></div>
+            <button id="reroll-quests" class="mt-2 px-3 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600" data-i18n="new_quests">Nouvelles quêtes</button>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="lg:col-span-1 space-y-4">
+          <div class="bg-neutral-900/70 rounded-2xl p-4 shadow">
+            <h2 class="text-xl font-semibold mb-2" data-i18n="starmap">Carte stellaire</h2>
+            <svg id="starmap" viewBox="0 0 320 320" class="w-full h-80 bg-neutral-950 rounded-xl border border-neutral-800"></svg>
+            <p class="text-xs text-neutral-400 mt-2" data-i18n="map_hint">Les lignes indiquent les trajets en cours.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mt-8 text-xs text-neutral-400">
+        v3: skins + quêtes + carte + Postgres. Have fun!
+      </footer>
+    </div>
+
+    <script src="/static/js/game.js"></script>
+  </body>
+</html>
